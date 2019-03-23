@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace IHaveASecret.Controllers
 {
@@ -10,36 +11,25 @@ namespace IHaveASecret.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        IConfiguration _config;
+        public ValuesController(IConfiguration config)
+        {
+            _config = config;
+        }
+        
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
-        }
+            string CmdLineConfigValue =_config.GetValue<string>("cmdlinearg") ?? "No Cmd Line Value Set";
+            
+            string EnvVarValue =_config.GetValue<string>("SECRET_ENV_VAR") ?? "No Env Var Value Set";
+            
+            string usrsecret1 = _config.GetValue<string>("user-secret-1") ?? "No user secret 1 Set";
+            
+            //string kvValue = _config.GetValue<string>("kvsecret1") ?? "No Azure KeyVault secret found";
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return new string[] { CmdLineConfigValue, EnvVarValue, usrsecret1 };
         }
     }
 }
