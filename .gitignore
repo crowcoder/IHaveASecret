@@ -9,7 +9,7 @@
 
 _build/
 _site/
-Properties/
+Properties/*
 !Properties/launchSettings.json
 
 # See #577
