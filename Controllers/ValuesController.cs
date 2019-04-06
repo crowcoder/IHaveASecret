@@ -27,9 +27,9 @@ namespace IHaveASecret.Controllers
             
             string usrsecret1 = _config.GetValue<string>("user-secret-1") ?? "No user secret 1 Set";
             
-            //string kvValue = _config.GetValue<string>("kvsecret1") ?? "No Azure KeyVault secret found";
+            string kvValue = _config.GetValue<string>("kvsecret1") ?? "No Azure KeyVault secret found";
 
-            return new string[] { CmdLineConfigValue, EnvVarValue, usrsecret1 };
+            return new string[] { kvValue, CmdLineConfigValue, EnvVarValue, usrsecret1 };
         }
     }
 }
