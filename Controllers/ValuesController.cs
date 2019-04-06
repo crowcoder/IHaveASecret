@@ -29,7 +29,7 @@ namespace IHaveASecret.Controllers
             
             //string kvValue = _config.GetValue<string>("kvsecret1") ?? "No Azure KeyVault secret found";
 
-            return new string[] { "arbitrary change", CmdLineConfigValue, EnvVarValue, usrsecret1 };
+            return new string[] { CmdLineConfigValue, EnvVarValue, usrsecret1 };
         }
     }
 }
