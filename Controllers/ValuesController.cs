@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -21,15 +18,20 @@ namespace IHaveASecret.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            string CmdLineConfigValue =_config.GetValue<string>("cmdlinearg") ?? "No Cmd Line Value Set";
-            
-            string EnvVarValue =_config.GetValue<string>("SECRET_ENV_VAR") ?? "No Env Var Value Set";
-            
-            string usrsecret1 = _config.GetValue<string>("user-secret-1") ?? "No user secret 1 Set";
-            
-            //string kvValue = _config.GetValue<string>("kvsecret1") ?? "No Azure KeyVault secret found";
+            string EnvVarValue =_config.GetValue<string>("SECRET_ENV_VAR") ?? "NOT SET";
 
-            return new string[] { CmdLineConfigValue, EnvVarValue, usrsecret1 };
+            string CmdLineConfigValue =_config.GetValue<string>("cmdlinearg") ?? "NOT SET";            
+            
+            string usrsecret1 = _config.GetValue<string>("user-secret-1") ?? "NOT SET";
+            
+            string kvValue = _config.GetValue<string>("kvsecret1") ?? "NOT SET";
+
+            return new string[] { 
+                $"Environment Variable: {EnvVarValue}",
+                $"Command Line Arg: {CmdLineConfigValue}", 
+                $"User Secret: {usrsecret1}",
+                $"KeyVault: {kvValue}"
+             };
         }
     }
 }
