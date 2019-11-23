@@ -18,7 +18,22 @@ namespace IHaveASecret
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args)
+            CreateWebHostBuilder(args).ConfigureAppConfiguration((context, config) =>
+            {
+                var builtConfig = config.Build();
+                string kvname = builtConfig.GetValue<string>("keyvault-name");
+            
+                var azureServiceTokenProvider = new AzureServiceTokenProvider();
+            
+                var keyVaultClient = new KeyVaultClient(
+                    new KeyVaultClient.AuthenticationCallback(
+                    azureServiceTokenProvider.KeyVaultTokenCallback));
+            
+                config.AddAzureKeyVault(
+                    $"https://{kvname}.vault.azure.net/",
+                    keyVaultClient,
+                    new DefaultKeyVaultSecretManager());
+            })
             .Build().Run();
         }
 
